@@ -2,12 +2,11 @@
 #include <ESP8266WebServer.h>
 #include <Discord_WebHook.h>
 
-//Prueba
-
 const char *ssid = "INFINITUM2060";
 const char *password = "Chispaxd10";
 Discord_Webhook discord;
 String DISCORD_WEBHOOK = "https://discord.com/api/webhooks/1184306215220674651/4GyZQ01NwQ0Aiq98KTgJQKhgCEZ3C8v4A6sF8QxitoMzJFEHJKlfg_rE_HfFT_HoxD-G";
+const int lm35Pin = A0;
 
 ESP8266WebServer server(80);
 
@@ -57,6 +56,17 @@ void setup() {
 
 void loop() {
   server.handleClient();
+
+  float temperature = analogRead(lm35Pin) + 6;
+
+  Serial.println("La temperatura es de: " + String(temperature)+ "°C!!!");
+
+  if(temperature > 25) {
+    String mensaje = "La temperatura esta rebasando el limite permitido (19°C) - Temperatura actual: " + String(temperature)+ "°C";
+    sendDiscordMessage(mensaje);
+  }
+
+  delay(1000);
 }
 
 void sendDiscordMessage(String message) {

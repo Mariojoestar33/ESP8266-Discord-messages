@@ -51,6 +51,18 @@ void setup() {
     server.send(200, "text/plain", info);
   });
 
+  server.on("/encenderFoco", HTTP_GET, []() {
+    server.sendHeader("Location", "http://192.168.0.115:5000/bulbon", true);
+    sendDiscordMessage("¡Has prendido el foco de la habitación!");
+    server.send(302, "text/plain", "");
+  });
+
+  server.on("/apagarFoco", HTTP_GET, []() {
+    server.sendHeader("Location", "http://192.168.0.115:5000/bulboff", true);
+    sendDiscordMessage("¡Has apagado el foco de la habitación!");
+    server.send(302, "text/plain", "");
+  });
+
   server.begin();
 }
 
